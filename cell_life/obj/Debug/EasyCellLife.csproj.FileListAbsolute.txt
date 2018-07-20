@@ -15,3 +15,4 @@ C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\cell_life.GameViewe
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.Properties.Resources.resources
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.csproj.GenerateResource.cache
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.csprojAssemblyReference.cache
