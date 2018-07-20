@@ -8,6 +8,10 @@ using System.Windows.Forms;
 /// </summary>
 namespace cell_life
 {
+    /*
+     * TODO: Prompt save-changes before deleted / creating new canvas or closing application
+     */
+
     public partial class GameViewer : Form
     {
         // Graphics related related objects
@@ -16,6 +20,18 @@ namespace cell_life
 
         private Bitmap graphBmp;
         private Graphics graphG;
+
+        /// <summary>
+        /// Color themes for drawing game elements
+        /// </summary>
+        private enum Theme
+        {
+            Dark1,
+            Dark2,
+            Light1,
+            Light2
+        }
+        private Theme currentTheme = Theme.Dark1;
 
         // Color definitions
         private Color col_bgLight = Color.WhiteSmoke;
@@ -50,8 +66,10 @@ namespace cell_life
 
             // Make game´s picture the same size as its bitmap
             pbGame.Size = canvasBmp.Size;
-            
-            draw();
+
+            // Update themes combobox
+            cmbTheme.Items.AddRange(Enum.GetNames(typeof(Theme)));
+            cmbTheme.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -77,18 +95,6 @@ namespace cell_life
                 canvasG.DrawRectangle(new Pen(new SolidBrush(Color.FromArgb((int)a, col)), 1), cx - i, cy - i, 2 * i, 2 * i);
             }*/
         }
-
-        /// <summary>
-        /// Color themes for drawing game elements
-        /// </summary>
-        private enum Theme
-        {
-            Dark1,
-            Dark2,
-            Light1,
-            Light2
-        }
-        private Theme currentTheme = Theme.Dark1;
 
         /// <summary>
         /// Draws all game elements onto game bitmap
@@ -243,7 +249,7 @@ namespace cell_life
             draw();
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private void deleteCanvas()
         {
             btnStart.Enabled = true;
             btnDelete.Enabled = false;
@@ -255,24 +261,35 @@ namespace cell_life
             draw();
         }
 
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            deleteCanvas();
+        }
+
         private void btnPause_Click(object sender, EventArgs e)
         {
             timer1.Enabled = !timer1.Enabled;
             btnPause.Text = timer1.Enabled ? "Pause" : "Resume";
         }
 
-        private void btnExport_Click(object sender, EventArgs e)
+        private void sldSpeed_Scroll(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Bitamp files (*.bmp)|*.bmp";
-            if (sfd.ShowDialog() == DialogResult.OK)
+            int speed = (sldSpeed.Maximum - sldSpeed.Value) * 10;
+            if(speed < 1)
             {
-                pbGame.Image.Save(sfd.FileName);
-                MessageBox.Show("Image saved as\n" + sfd.FileName);
+                speed = 1;
             }
+
+            lblSpeed.Text = string.Format("{0}ms", speed);
+            timer1.Interval = speed;
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            deleteCanvas();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = FILE_FILTER;
@@ -290,7 +307,7 @@ namespace cell_life
             }
         }
 
-        private void btnLoad_Click(object sender, EventArgs e)
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = FILE_FILTER;
@@ -317,16 +334,34 @@ namespace cell_life
             }
         }
 
-        private void sldSpeed_Scroll(object sender, EventArgs e)
+        private void exportAsImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int speed = (sldSpeed.Maximum - sldSpeed.Value) * 10;
-            if(speed < 1)
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Bitamp files (*.bmp)|*.bmp";
+            if (sfd.ShowDialog() == DialogResult.OK)
             {
-                speed = 1;
+                pbGame.Image.Save(sfd.FileName);
+                MessageBox.Show("Image saved as\n" + sfd.FileName);
             }
+        }
 
-            lblSpeed.Text = string.Format("{0}ms", speed);
-            timer1.Interval = speed;
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show($"Created by Logic Limit (LogLim) @ 2018\n\nFor more software visit https://www.loglim.cz/");
+        }
+
+        private void cmbTheme_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbTheme.SelectedIndex != -1)
+            {
+                currentTheme = (Theme)cmbTheme.SelectedIndex;
+                draw();
+            }
         }
     }
 }

@@ -9,3 +9,9 @@ C:\Development\CSharp\Projects\Experiment\cell_life\cell_life\obj\Debug\EasyCell
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\bin\Debug\EasyCellLife.exe.config
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.exe
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.pdb
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\bin\Debug\EasyCellLife.exe
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\bin\Debug\EasyCellLife.pdb
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\cell_life.GameViewer.resources
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.Properties.Resources.resources
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.csproj.GenerateResource.cache
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.csproj.CoreCompileInputs.cache
