@@ -1,0 +1,9 @@
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\bin\Release\EasyCellLife.exe.config
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\bin\Release\EasyCellLife.exe
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\bin\Release\EasyCellLife.pdb
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Release\EasyCellLife.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Release\cell_life.GameViewer.resources
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Release\EasyCellLife.Properties.Resources.resources
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Release\EasyCellLife.csproj.GenerateResource.Cache
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Release\EasyCellLife.exe
+C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Release\EasyCellLife.pdb
