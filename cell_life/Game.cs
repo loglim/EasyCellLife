@@ -46,6 +46,8 @@ namespace cell_life
             cellCount = 0;
             generationID = 0;
 
+            some new line of code
+
             //clear graph history
             for (int i = 0; i < cellCountHistory.Length; i++)
             {
