@@ -601,4 +601,7 @@
         AAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="DeadPopulation" xml:space="preserve">
+    <value>Dead population!</value>
+  </data>
 </root>

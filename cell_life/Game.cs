@@ -274,12 +274,14 @@ namespace LogLim.EasyCellLife
             try
             {
                 var sr = new StreamReader(filename);
-                W = int.Parse(sr.ReadLine());
-                H = int.Parse(sr.ReadLine());
+                W = int.Parse(sr.ReadLine() ?? throw new InvalidOperationException());
+                H = int.Parse(sr.ReadLine() ?? throw new InvalidOperationException());
                 _grid = new bool[W, H];
                 while (!sr.EndOfStream)
                 {
-                    var line = sr.ReadLine().Split('#');
+                    var line = sr.ReadLine()?.Split('#');
+                    if (line == null) continue;
+
                     var x = int.Parse(line[0]);
                     var y = int.Parse(line[1]);
 

@@ -52,6 +52,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.VersionLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ThemeComboBox = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.GamePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpeedSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbHistoryGraph)).BeginInit();
@@ -261,11 +263,31 @@
             this.VersionLabel.Size = new System.Drawing.Size(74, 17);
             this.VersionLabel.Text = "VersionLabel";
             // 
+            // ThemeComboBox
+            // 
+            this.ThemeComboBox.FormattingEnabled = true;
+            this.ThemeComboBox.Location = new System.Drawing.Point(445, 284);
+            this.ThemeComboBox.Name = "ThemeComboBox";
+            this.ThemeComboBox.Size = new System.Drawing.Size(121, 21);
+            this.ThemeComboBox.TabIndex = 16;
+            this.ThemeComboBox.SelectedIndexChanged += new System.EventHandler(this.ThemeComboBox_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(442, 268);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 13);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "Theme";
+            // 
             // GameViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 485);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.ThemeComboBox);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.pbHistoryGraph);
@@ -320,6 +342,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem ExitButton;
         private System.Windows.Forms.ToolStripButton AboutButton;
+        private System.Windows.Forms.ComboBox ThemeComboBox;
+        private System.Windows.Forms.Label label1;
     }
 }
 

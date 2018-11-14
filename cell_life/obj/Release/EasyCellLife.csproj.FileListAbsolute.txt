@@ -19,3 +19,4 @@ C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Release\EasyCellLi
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\EasyCellLife.exe
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\EasyCellLife.pdb
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\LogLim.EasyCellLife.About.resources
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\LogLim.EasyCellLife.Properties.Strings.resources

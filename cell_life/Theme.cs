@@ -7,7 +7,10 @@
     {
         Dark1,
         Dark2,
+        Dark3,
         Light1,
-        Light2
+        Light2,
+        Light3,
+        Organic1
     }
 }
