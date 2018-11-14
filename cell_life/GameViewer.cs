@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace LogLim.EasyCellLife
@@ -32,9 +33,14 @@ namespace LogLim.EasyCellLife
         public GameViewer()
         {
             InitializeComponent();
+
+            // Update version label
+            VersionLabel.Text = $"Version {Assembly.GetExecutingAssembly().GetName().Version}";
+
+            SetStatus("Welcome to ECL, a Cell-life game simulator");
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void GameViewer_Load(object sender, EventArgs e)
         {
             // Setup new game and grid
             _game = new Game();
@@ -208,6 +214,7 @@ namespace LogLim.EasyCellLife
             _game.BackupGrid();
             timer1.Start();
             SetControlButtons(false, true, true, true);
+            SetStatus("Simulation started...");
         }
 
         private void BtnReset_Click(object sender, EventArgs e)
@@ -216,6 +223,7 @@ namespace LogLim.EasyCellLife
             _game.RestoreGrid();
             Draw();
             SetControlButtons(true, true, false, false);
+            SetStatus("Simulation reset");
         }
 
         private void BtnDelete_Click(object sender, EventArgs e)
@@ -240,16 +248,16 @@ namespace LogLim.EasyCellLife
             PauseButton.Text = timer1.Enabled ? "Pause" : "Resume";
         }
 
-        private void BtnExport_Click(object sender, EventArgs e)
+        private void Export()
         {
-            var sfd = new SaveFileDialog { Filter = "Bitamp files (*.bmp)|*.bmp" };
+            var sfd = new SaveFileDialog { Filter = "Bitmap files (*.bmp)|*.bmp" };
             if (sfd.ShowDialog() != DialogResult.OK) return;
 
             GamePictureBox.Image.Save(sfd.FileName);
             MessageBox.Show($"Image saved as\n{sfd.FileName}");
         }
 
-        private void SaveButton_Click(object sender, EventArgs e)
+        private void Save()
         {
             var sfd = new SaveFileDialog { Filter = FileFilter };
             if (sfd.ShowDialog() != DialogResult.OK) return;
@@ -257,7 +265,7 @@ namespace LogLim.EasyCellLife
             var error = string.Empty;
             if (_game.Save(sfd.FileName, ref error))
             {
-                MessageBox.Show("File succesfully saved!");
+                MessageBox.Show("File successfully saved!");
             }
             else
             {
@@ -265,7 +273,7 @@ namespace LogLim.EasyCellLife
             }
         }
 
-        private void BtnLoad_Click(object sender, EventArgs e)
+        private void LoadFile()
         {
             var ofd = new OpenFileDialog { Filter = FileFilter };
             if (ofd.ShowDialog() != DialogResult.OK) return;
@@ -276,7 +284,7 @@ namespace LogLim.EasyCellLife
                 if (_game.Load(ofd.FileName, ref error))
                 {
                     Draw();
-                    MessageBox.Show("File succesfully loaded!");
+                    MessageBox.Show("File successfully loaded!");
                 }
                 else
                 {
@@ -299,6 +307,36 @@ namespace LogLim.EasyCellLife
 
             SpeedLabel.Text = $"{speed}ms";
             timer1.Interval = speed;
+        }
+
+        private void SetStatus(string message)
+        {
+            StatusLabel.Text = message;
+        }
+
+        private void LoadButton_Click(object sender, EventArgs e)
+        {
+            LoadFile();
+        }
+
+        private void SaveAsButton_Click(object sender, EventArgs e)
+        {
+            Save();
+        }
+
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            Export();
+        }
+
+        private void ExitButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void AboutButton_Click(object sender, EventArgs e)
+        {
+            new About().ShowDialog();
         }
     }
 }

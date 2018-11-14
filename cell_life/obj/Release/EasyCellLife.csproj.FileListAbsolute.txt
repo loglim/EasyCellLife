@@ -13,8 +13,9 @@ C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\LogLim.Eas
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\LogLim.EasyCellLife.Properties.Resources.resources
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\EasyCellLife.csproj.GenerateResource.cache
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\EasyCellLife.csproj.CoreCompileInputs.cache
-C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Release\LogLim.EasyCellLife.exe.config
-C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Release\LogLim.EasyCellLife.exe
-C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Release\LogLim.EasyCellLife.pdb
-C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\LogLim.EasyCellLife.exe
-C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\LogLim.EasyCellLife.pdb
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Release\EasyCellLife.exe.config
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Release\EasyCellLife.exe
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Release\EasyCellLife.pdb
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\EasyCellLife.exe
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\EasyCellLife.pdb
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\LogLim.EasyCellLife.About.resources
