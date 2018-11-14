@@ -16,3 +16,12 @@ C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.Proper
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.csproj.GenerateResource.cache
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.csproj.CoreCompileInputs.cache
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Debug\EasyCellLife.csprojAssemblyReference.cache
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Debug\LogLim.EasyCellLife.GameViewer.resources
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Debug\LogLim.EasyCellLife.Properties.Resources.resources
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Debug\EasyCellLife.csproj.GenerateResource.cache
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Debug\EasyCellLife.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Debug\EasyCellLife.exe.config
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Debug\EasyCellLife.exe
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Debug\EasyCellLife.pdb
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Debug\EasyCellLife.exe
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Debug\EasyCellLife.pdb

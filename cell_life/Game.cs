@@ -1,59 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace cell_life
+namespace LogLim.EasyCellLife
 {
-    class Game
+    internal class Game
     {
-        private int w;
-        private int h;
+        // Private
+        private readonly Random _rnd;
 
-        private bool[,] grid;
-        private bool[,] gridBc;
+        private bool[,] _grid;
+        private bool[,] _gridBc;
 
-        private int generationID;
-        private int cellCount;
-
-        private int[] cellCountHistory;
-        private int graphPos;
         //private int generationsLimit;
-
-        private Random rnd;
 
         public Game(int w = 64, int h = 64)
         {
-            rnd = new Random();
+            _rnd = new Random();
 
-            this.w = w;
-            this.h = h;
+            W = w;
+            H = h;
         }
 
-        public void createNewGrid(int graph_width)
+        public void CreateNewGrid(int graphWidth)
         {
-            gridBc = new bool[w, h];
-            cellCountHistory = new int[graph_width];
+            _gridBc = new bool[W, H];
+            CellCountHistory = new int[graphWidth];
 
-            resetGrid();
+            ResetGrid();
         }
 
-        public void resetGrid()
+        public void ResetGrid()
         {
-            grid = new bool[w, h];
-            cellCount = 0;
-            generationID = 0;
-
-            some new line of code
+            _grid = new bool[W, H];
+            CellCount = 0;
+            GenerationId = 0;
 
             //clear graph history
-            for (int i = 0; i < cellCountHistory.Length; i++)
+            for (var i = 0; i < CellCountHistory.Length; i++)
             {
-                cellCountHistory[i] = 0;
+                CellCountHistory[i] = 0;
             }
-            graphPos = 0;
+            GraphPosition = 0;
 
             //textBox1.Text = string.Empty;
 
@@ -90,39 +77,39 @@ namespace cell_life
         /// <summary>
         /// Calculates next step of simulation
         /// </summary>
-        /// <returns>Ammount of changes</returns>
-        public int nextStep()
+        /// <returns>Amount of changes</returns>
+        public int NextStep()
         {
-            int changes = 0;
+            var changes = 0;
 
-            //create temporary grid
-            bool[,] tmp = new bool[w, h];
-            for (int x = 0; x < w; x++)
+            // Create temporary grid
+            var tmp = new bool[W, H];
+            for (var x = 0; x < W; x++)
             {
-                for (int y = 0; y < h; y++)
+                for (var y = 0; y < H; y++)
                 {
-                    bool alive = grid[x, y];
+                    var alive = _grid[x, y];
 
-                    int n = countNeighbours(x, y);
+                    var n = CountNeighbors(x, y);
                     if (alive)
                     {
                         if (n < 2 || n > 3)
                         {
-                            //die
+                            // Kill
                             alive = false;
                         }
                     }
-                    else //dead
+                    else // Dead
                     {
                         if (n == 3)
                         {
-                            //ressurect
+                            // Resurrect
                             alive = true;
                         }
                     }
 
                     tmp[x, y] = alive;
-                    if (alive != grid[x, y])
+                    if (alive != _grid[x, y])
                     {
                         changes++;
                     }
@@ -130,58 +117,58 @@ namespace cell_life
             }
 
             //update original grid
-            for (int x = 0; x < w; x++)
+            for (var x = 0; x < W; x++)
             {
-                for (int y = 0; y < h; y++)
+                for (var y = 0; y < H; y++)
                 {
-                    set(x, y, tmp[x, y]);
+                    Set(x, y, tmp[x, y]);
                 }
             }
 
             //save current cell count
-            cellCountHistory[graphPos] = cellCount;
+            CellCountHistory[GraphPosition] = CellCount;
 
             //increase or cycle (start over at 0) graph position
-            graphPos++;
-            if (graphPos >= cellCountHistory.Length)
+            GraphPosition++;
+            if (GraphPosition >= CellCountHistory.Length)
             {
-                graphPos = 0;
+                GraphPosition = 0;
             }
 
             if (changes > 0)
             {
-                generationID++;
+                GenerationId++;
             }
 
             return changes;
         }
 
-        private int countNeighbours(int x, int y)
+        private int CountNeighbors(int x, int y)
         {
-            int n = 0;
+            var n = 0;
 
-            if (get(x + 1, y))
+            if (Get(x + 1, y))
                 n++;
-            if (get(x - 1, y))
+            if (Get(x - 1, y))
                 n++;
-            if (get(x, y + 1))
+            if (Get(x, y + 1))
                 n++;
-            if (get(x, y - 1))
+            if (Get(x, y - 1))
                 n++;
 
-            if (get(x + 1, y + 1))
+            if (Get(x + 1, y + 1))
                 n++;
-            if (get(x + 1, y - 1))
+            if (Get(x + 1, y - 1))
                 n++;
-            if (get(x - 1, y + 1))
+            if (Get(x - 1, y + 1))
                 n++;
-            if (get(x - 1, y - 1))
+            if (Get(x - 1, y - 1))
                 n++;
 
             return n;
         }
 
-        public bool get(int x, int y)
+        public bool Get(int x, int y)
         {
             /*if (x < 0 || y < 0 || x >= w || y >= h)
             {
@@ -189,25 +176,25 @@ namespace cell_life
             }*/
             while (x < 0)
             {
-                x += w;
+                x += W;
             }
-            while (x >= w)
+            while (x >= W)
             {
-                x -= w;
+                x -= W;
             }
             while (y < 0)
             {
-                y += h;
+                y += H;
             }
-            while (y >= h)
+            while (y >= H)
             {
-                y -= h;
+                y -= H;
             }
 
-            return grid[x, y];
+            return _grid[x, y];
         }
 
-        private bool set(int x, int y, bool value)
+        private bool Set(int x, int y, bool value)
         {
             /*if (x < 0 || y < 0 || x >= w || y >= h)
             {
@@ -215,94 +202,91 @@ namespace cell_life
             }*/
             while (x < 0)
             {
-                x += w;
+                x += W;
             }
-            while (x >= w)
+            while (x >= W)
             {
-                x -= w;
+                x -= W;
             }
             while (y < 0)
             {
-                y += h;
+                y += H;
             }
-            while (y >= h)
+            while (y >= H)
             {
-                y -= h;
+                y -= H;
             }
 
-            if (grid[x, y] != value)
-            {
-                grid[x, y] = value;
-                cellCount += value ? 1 : -1;
-            }
+            if (_grid[x, y] == value) return true;
+
+            _grid[x, y] = value;
+            CellCount += value ? 1 : -1;
 
             return true;
         }
 
-        public void generateRandomShape(int x, int y)
+        public void GenerateRandomShape(int x, int y)
         {
-            int[] dx = new int[] { 1, 0, -1, 0, 1, 1, -1, -1 };
-            int[] dy = new int[] { 0, 1, 0, -1, 1, -1, 1, -1 };
+            int[] dx = { 1, 0, -1, 0, 1, 1, -1, -1 };
+            int[] dy = { 0, 1, 0, -1, 1, -1, 1, -1 };
 
-            for (int i = 0; i < dx.Length; i++)
+            for (var i = 0; i < dx.Length; i++)
             {
-                int z = 1;
-                while (rnd.NextDouble() < 0.5)
+                var z = 1;
+                while (_rnd.NextDouble() < 0.5)
                 {
-                    set(x + z * dx[i], y + z * dy[i], true);
+                    Set(x + z * dx[i], y + z * dy[i], true);
                 }
             }
         }
 
-        public void backupGrid()
+        public void BackupGrid()
         {
-            //backup grid
-            for (int x = 0; x < w; x++)
+            for (var x = 0; x < W; x++)
             {
-                for (int y = 0; y < h; y++)
+                for (var y = 0; y < H; y++)
                 {
-                    gridBc[x, y] = grid[x, y];
+                    _gridBc[x, y] = _grid[x, y];
                 }
             }
 
-            generationID = 1;
+            GenerationId = 1;
         }
 
-        public void restoreGrid()
+        public void RestoreGrid()
         {
-            for (int x = 0; x < w; x++)
+            for (var x = 0; x < W; x++)
             {
-                for (int y = 0; y < h; y++)
+                for (var y = 0; y < H; y++)
                 {
-                    set(x, y, gridBc[x, y]);
+                    Set(x, y, _gridBc[x, y]);
                 }
             }
         }
 
-        public void invertField(int x, int y)
+        public void InvertField(int x, int y)
         {
-            set(x, y, !get(x, y));
+            Set(x, y, !Get(x, y));
         }
 
-        public bool load(string filename, ref string error)
+        public bool Load(string filename, ref string error)
         {
             try
             {
-                StreamReader sr = new StreamReader(filename);
-                w = int.Parse(sr.ReadLine());
-                h = int.Parse(sr.ReadLine());
-                grid = new bool[w, h];
+                var sr = new StreamReader(filename);
+                W = int.Parse(sr.ReadLine());
+                H = int.Parse(sr.ReadLine());
+                _grid = new bool[W, H];
                 while (!sr.EndOfStream)
                 {
-                    string[] line = sr.ReadLine().Split('#');
-                    int x = int.Parse(line[0]);
-                    int y = int.Parse(line[1]);
+                    var line = sr.ReadLine().Split('#');
+                    var x = int.Parse(line[0]);
+                    var y = int.Parse(line[1]);
 
-                    if (!set(x, y, true))
-                    {
-                        error = string.Format("Can't assign value to field: {0} x {1}", x, y);
-                        return false;
-                    }
+                    if (Set(x, y, true)) continue;
+
+                    error = $"Can't assign value to field: {x} x {y}";
+                    return false;
                 }
                 sr.Close();
             }
@@ -313,24 +297,24 @@ namespace cell_life
             return true;
         }
 
-        public bool save(string fileName, ref string error)
+        public bool Save(string fileName, ref string error)
         {
             try
             {
-                StreamWriter sw = new StreamWriter(fileName);
+                var sw = new StreamWriter(fileName);
 
-                //write grid size
-                sw.WriteLine("" + w);
-                sw.WriteLine("" + h);
+                // Write grid size
+                sw.WriteLine("" + W);
+                sw.WriteLine("" + H);
 
-                //write current grid
-                for (int x = 0; x < w; x++)
+                // Write current grid
+                for (var x = 0; x < W; x++)
                 {
-                    for (int y = 0; y < h; y++)
+                    for (var y = 0; y < H; y++)
                     {
-                        if (get(x, y))
+                        if (Get(x, y))
                         {
-                            sw.WriteLine(string.Format("{0}#{1}", x, y));
+                            sw.WriteLine($"{x}#{y}");
                         }
                     }
                 }
@@ -343,12 +327,11 @@ namespace cell_life
             return true;
         }
 
-        public int GenerationID { get { return generationID; } }
-        public int CellCount { get { return cellCount; } }
-        public int[] CellCountHistory { get { return cellCountHistory; } }
-        public int GraphPosition { get { return graphPos; } }
-
-        public int W { get { return w; } }
-        public int H { get { return h; } }
+        public int GenerationId { get; private set; }
+        public int CellCount { get; private set; }
+        public int[] CellCountHistory { get; private set; }
+        public int GraphPosition { get; private set; }
+        public int W { get; private set; }
+        public int H { get; private set; }
     }
 }

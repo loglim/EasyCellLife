@@ -7,7 +7,7 @@
     <ProjectGuid>{F6ED206F-3555-4A72-8889-86CEB16BC1E6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EasyCellLife</RootNamespace>
+    <RootNamespace>LogLim.EasyCellLife</RootNamespace>
     <AssemblyName>EasyCellLife</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Theme.cs" />
     <EmbeddedResource Include="GameViewer.resx">
       <DependentUpon>GameViewer.cs</DependentUpon>
     </EmbeddedResource>

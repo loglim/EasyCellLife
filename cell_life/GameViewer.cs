@@ -3,48 +3,31 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-/// <summary>
-/// Cell Life game, created by LogicLimit @ 2018
-/// </summary>
-namespace cell_life
+namespace LogLim.EasyCellLife
 {
-    /*
-     * TODO: Prompt save-changes before deleted / creating new canvas or closing application
-     */
-
+    /// <summary>
+    /// Cell Life game, created by LogicLimit @ 2018
+    /// </summary>
     public partial class GameViewer : Form
     {
-        // Graphics related related objects
-        private Bitmap canvasBmp;
-        private Graphics canvasG;
-
-        private Bitmap graphBmp;
-        private Graphics graphG;
-
-        /// <summary>
-        /// Color themes for drawing game elements
-        /// </summary>
-        private enum Theme
-        {
-            Dark1,
-            Dark2,
-            Light1,
-            Light2
-        }
-        private Theme currentTheme = Theme.Dark1;
-
-        // Color definitions
-        private Color col_bgLight = Color.WhiteSmoke;
-        private Color col_bgDark = Color.Black;
-        private Color col_grid = Color.Black;
-        private Color col_field = Color.Yellow;
-
         // Constants
-        private const int CELL_SIZE = 6;
-        private const string FILE_FILTER = "CLX Files (*.clx)|*.clx";
+        private const int CellSize = 6;
+        private const string FileFilter = "CLX Files (*.clx)|*.clx";
+        protected internal const int GraphPadding = 8;
+        private readonly Color _colBgLight = Color.WhiteSmoke;
+        private readonly Color _colBgDark = Color.Black;
+        private readonly Color _colGrid = Color.Black;
+        private readonly Color _colField = Color.Yellow;
+
+        // Private
+        private Theme CurrentTheme = Theme.Dark1;
+        private Bitmap _canvasBmp;
+        private Bitmap _graphBmp;
+        private Graphics _canvasG;
+        private Graphics _graphG;
 
         // Current game object
-        private Game game;
+        private Game _game;
 
         public GameViewer()
         {
@@ -54,39 +37,37 @@ namespace cell_life
         private void Form1_Load(object sender, EventArgs e)
         {
             // Setup new game and grid
-            game = new Game();
-            game.createNewGrid(pbHistoryGraph.Width);
+            _game = new Game();
+            _game.CreateNewGrid(pbHistoryGraph.Width);
 
             // Initialize bitmaps and graphics objects
-            graphBmp = new Bitmap(pbHistoryGraph.Width, pbHistoryGraph.Height);
-            graphG = Graphics.FromImage(graphBmp);
+            _graphBmp = new Bitmap(pbHistoryGraph.Width, pbHistoryGraph.Height);
+            _graphG = Graphics.FromImage(_graphBmp);
 
-            canvasBmp = new Bitmap(game.W * CELL_SIZE + 1, game.H * CELL_SIZE + 1);
-            canvasG = Graphics.FromImage(canvasBmp);
+            _canvasBmp = new Bitmap(_game.W * CellSize + 1, _game.H * CellSize + 1);
+            _canvasG = Graphics.FromImage(_canvasBmp);
 
             // Make game´s picture the same size as its bitmap
-            pbGame.Size = canvasBmp.Size;
+            GamePictureBox.Size = _canvasBmp.Size;
 
-            // Update themes combobox
-            cmbTheme.Items.AddRange(Enum.GetNames(typeof(Theme)));
-            cmbTheme.SelectedIndex = 0;
+            Draw();
         }
 
         /// <summary>
         /// Draws filled circle on game bitmap
         /// </summary>
-        private void drawCircle(Brush backgroundBrush, int x, int y, int radius)
+        private void DrawCircle(Brush backgroundBrush, int x, int y, int radius)
         {
-            canvasG.FillEllipse(backgroundBrush, x - radius / 2, y - radius / 2, radius, radius);
+            _canvasG.FillEllipse(backgroundBrush, x - radius / 2, y - radius / 2, radius, radius);
         }
 
         /// <summary>
         /// Draws filled rectangle on game bitmap
         /// </summary>
-        private void drawRect(Color color, int centerX, int centerY, int radius)
+        private void DrawRect(int centerX, int centerY, int radius)
         {
             //Var. A) Single color 
-            canvasG.FillRectangle(Brushes.Yellow, centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+            _canvasG.FillRectangle(Brushes.Yellow, centerX - radius, centerY - radius, 2 * radius, 2 * radius);
 
             //Var. B) gradient version
             /*for (int i = 1; i <= r; i++)
@@ -99,106 +80,103 @@ namespace cell_life
         /// <summary>
         /// Draws all game elements onto game bitmap
         /// </summary>
-        private void draw()
+        private void Draw()
         {
-            Color backcolor = currentTheme == Theme.Dark1 || currentTheme == Theme.Dark2 ? col_bgDark : col_bgLight;
-            Color forecolor = currentTheme == Theme.Dark1 || currentTheme == Theme.Dark2 ? col_bgLight : col_bgDark;
-            canvasG.Clear(backcolor);
+            var backColor = CurrentTheme == Theme.Dark1 || CurrentTheme == Theme.Dark2 ? _colBgDark : _colBgLight;
+            var foreColor = CurrentTheme == Theme.Dark1 || CurrentTheme == Theme.Dark2 ? _colBgLight : _colBgDark;
+            _canvasG.Clear(backColor);
 
-            Pen p1 = new Pen(col_grid, 1f);
-            int offset = 1;
-            for (int x = 0; x < game.W; x++)
+            var p1 = new Pen(_colGrid, 1f);
+            const int offset = 1;
+            for (var x = 0; x < _game.W; x++)
             {
-                for (int y = 0; y < game.H; y++)
+                for (var y = 0; y < _game.H; y++)
                 {
                     // Draw grid
-                    canvasG.DrawRectangle(p1, x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    _canvasG.DrawRectangle(p1, x * CellSize, y * CellSize, CellSize, CellSize);
 
                     // Draw field
-                    if(game.get(x, y))
+                    if (!_game.Get(x, y)) continue;
+
+                    switch (CurrentTheme)
                     {
-                        switch (currentTheme)
-                        {
-                            case Theme.Dark1:
-                                {
-                                    drawRect(col_field, (int)((x + 0.5) * CELL_SIZE), (int)((y + 0.5) * CELL_SIZE), CELL_SIZE / 2);
-                                    break;
-                                }
-                            case Theme.Dark2:
-                                {
-                                    // Outlined circles
-                                    drawCircle(Brushes.LightBlue, x * CELL_SIZE + CELL_SIZE / 2, y * CELL_SIZE + CELL_SIZE / 2, CELL_SIZE);
-                                    drawCircle(Brushes.Blue, x * CELL_SIZE + CELL_SIZE / 2, y * CELL_SIZE + CELL_SIZE / 2, (int)(CELL_SIZE / 1.3));
-                                    drawCircle(Brushes.DarkBlue, x * CELL_SIZE + CELL_SIZE / 2, y * CELL_SIZE + CELL_SIZE / 2, (int)(CELL_SIZE / 1.5));
-                                    break;
-                                }
-                            case Theme.Light1:
-                                {
-                                    // Unnamed, but interesting
-                                    canvasG.FillEllipse(Brushes.LightBlue, x * CELL_SIZE + offset, y * CELL_SIZE + offset, CELL_SIZE - offset, CELL_SIZE - offset);
-                                    canvasG.FillEllipse(Brushes.Blue, x * CELL_SIZE + offset, y * CELL_SIZE + offset, CELL_SIZE - offset, CELL_SIZE - offset);
-                                    canvasG.FillEllipse(Brushes.DarkBlue, x * CELL_SIZE + offset, y * CELL_SIZE + offset, CELL_SIZE - offset, CELL_SIZE - offset);
-                                    break;
-                                }
-                            case Theme.Light2:
-                                {
-                                    // Simple filled rectangles
-                                    canvasG.FillRectangle(Brushes.Blue, x * CELL_SIZE + offset, y * CELL_SIZE + offset, CELL_SIZE - offset, CELL_SIZE - offset);
-                                    break;
-                                }
-                        }
+                        case Theme.Dark1:
+                            {
+                                DrawRect((int)((x + 0.5) * CellSize), (int)((y + 0.5) * CellSize), CellSize / 2);
+                                break;
+                            }
+                        case Theme.Dark2:
+                            {
+                                // Outlined circles
+                                DrawCircle(Brushes.LightBlue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2, CellSize);
+                                DrawCircle(Brushes.Blue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2, (int)(CellSize / 1.3));
+                                DrawCircle(Brushes.DarkBlue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2, (int)(CellSize / 1.5));
+                                break;
+                            }
+                        case Theme.Light1:
+                            {
+                                // Unnamed, but interesting
+                                _canvasG.FillEllipse(Brushes.LightBlue, x * CellSize + offset, y * CellSize + offset, CellSize - offset, CellSize - offset);
+                                _canvasG.FillEllipse(Brushes.Blue, x * CellSize + offset, y * CellSize + offset, CellSize - offset, CellSize - offset);
+                                _canvasG.FillEllipse(Brushes.DarkBlue, x * CellSize + offset, y * CellSize + offset, CellSize - offset, CellSize - offset);
+                                break;
+                            }
+                        case Theme.Light2:
+                            {
+                                // Simple filled rectangles
+                                _canvasG.FillRectangle(Brushes.Blue, x * CellSize + offset, y * CellSize + offset, CellSize - offset, CellSize - offset);
+                                break;
+                            }
                     }
                 }
             }
 
             // Show changes
-            pbGame.Image = canvasBmp;
+            GamePictureBox.Image = _canvasBmp;
 
             // Draw and show population graph
-            graphG.Clear(this.BackColor);
+            _graphG.Clear(BackColor);
 
-            int max = game.CellCountHistory.Max();
-            if(max == 0)
+            var max = _game.CellCountHistory.Max();
+            if (max == 0)
             {
                 max = 1;
             }
 
-            int padding = 8;
-            double mult = (graphBmp.Height - 2 * padding) / max;
-
-            Pen p2 = new Pen(Color.Red, 1f);
-            for (int i = 0; i < game.CellCountHistory.Length; i++)
+            var multiplier = (double)(_graphBmp.Height - 2 * GraphPadding) / max;
+            var p2 = new Pen(Color.Red, 1f);
+            for (var i = 0; i < _game.CellCountHistory.Length; i++)
             {
-                int p = game.GraphPosition - i;
-                if(p < 0)
+                var p = _game.GraphPosition - i;
+                if (p < 0)
                 {
-                    p += game.CellCountHistory.Length;
+                    p += _game.CellCountHistory.Length;
                 }
-                graphG.DrawLine(p2, i, graphBmp.Height - padding, i, graphBmp.Height - (int)(game.CellCountHistory[p] * mult) - padding);
+                _graphG.DrawLine(p2, i, _graphBmp.Height - GraphPadding, i, _graphBmp.Height - (int)(_game.CellCountHistory[p] * multiplier) - GraphPadding);
 
-                if(game.CellCountHistory[i] == 0)
+                if (_game.CellCountHistory[i] == 0)
                 {
                     break;
                 }
             }
             //graphG.DrawLine(p1, generations.Length - 1, graph.Height - padding, generations.Length - 1, graph.Height - (int)((double)generations[generations.Length - 1] * mult) - padding);
 
-            Font f = new Font(FontFamily.GenericSansSerif, 12f);
+            var f = new Font(FontFamily.GenericSansSerif, 12f);
 
             // Draw y axis with labels
-            graphG.DrawLine(p1, 0, padding, 32, padding);
-            graphG.DrawLine(p1, 0, graphBmp.Height - padding, 32, graphBmp.Height - padding);
-            graphG.DrawString(max.ToString(), f, Brushes.Black, 0, padding);
-            graphG.DrawString("0", f, Brushes.Black, 0, graphBmp.Height - padding - 20);
+            _graphG.DrawLine(p1, 0, GraphPadding, 32, GraphPadding);
+            _graphG.DrawLine(p1, 0, _graphBmp.Height - GraphPadding, 32, _graphBmp.Height - GraphPadding);
+            _graphG.DrawString(max.ToString(), f, Brushes.Black, 0, GraphPadding);
+            _graphG.DrawString("0", f, Brushes.Black, 0, _graphBmp.Height - GraphPadding - 20);
 
-            pbHistoryGraph.Image = graphBmp;
+            pbHistoryGraph.Image = _graphBmp;
 
-            lblGeneration.Text = string.Format("Generation #{0}\nCells: {1}", game.GenerationID, game.CellCount);
+            lblGeneration.Text = $"Generation #{_game.GenerationId}\nCells: {_game.CellCount}";
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
-            int changes = game.nextStep();
+            var changes = _game.NextStep();
 
             if (changes == 0)
             {
@@ -206,162 +184,121 @@ namespace cell_life
                 lblGeneration.Text += "\n\nDead population!";
             }
 
-            draw();
+            Draw();
         }
 
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        private void PictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            int x = e.X / CELL_SIZE;
-            int y = e.Y / CELL_SIZE;
+            var x = e.X / CellSize;
+            var y = e.Y / CellSize;
 
-            if(e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right)
             {
-                game.generateRandomShape(x, y);
+                _game.GenerateRandomShape(x, y);
             }
-            game.invertField(x, y);
+            _game.InvertField(x, y);
 
             //textBox1.Text += string.Format("{0} x {1}\n", x, y);//("grid[{0}, {1}] = true;\n", x, y);
 
-            draw();
+            Draw();
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private void BtnStart_Click(object sender, EventArgs e)
         {
-            game.backupGrid();
-            
-            btnStart.Enabled = false;
-            btnDelete.Enabled = true;
-            btnReset.Enabled = true;
-            btnPause.Enabled = true;
-
+            _game.BackupGrid();
             timer1.Start();
+            SetControlButtons(false, true, true, true);
         }
 
-        private void btnReset_Click(object sender, EventArgs e)
+        private void BtnReset_Click(object sender, EventArgs e)
         {
             timer1.Stop();
-            btnStart.Enabled = true;
-            btnDelete.Enabled = true;
-            btnReset.Enabled = false;
-            btnPause.Enabled = false;
-
-            game.restoreGrid();
-            draw();
+            _game.RestoreGrid();
+            Draw();
+            SetControlButtons(true, true, false, false);
         }
 
-        private void deleteCanvas()
+        private void BtnDelete_Click(object sender, EventArgs e)
         {
-            btnStart.Enabled = true;
-            btnDelete.Enabled = false;
-            btnReset.Enabled = false;
-            btnPause.Enabled = false;
-
             timer1.Stop();
-            game.resetGrid();
-            draw();
+            _game.ResetGrid();
+            Draw();
+            SetControlButtons(true, false, false, false);
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private void SetControlButtons(bool start, bool delete, bool reset, bool pause)
         {
-            deleteCanvas();
+            StartButton.Enabled = start;
+            DeleteButton.Enabled = delete;
+            ResetButton.Enabled = reset;
+            PauseButton.Enabled = pause;
         }
 
-        private void btnPause_Click(object sender, EventArgs e)
+        private void BtnPause_Click(object sender, EventArgs e)
         {
             timer1.Enabled = !timer1.Enabled;
-            btnPause.Text = timer1.Enabled ? "Pause" : "Resume";
+            PauseButton.Text = timer1.Enabled ? "Pause" : "Resume";
         }
 
-        private void sldSpeed_Scroll(object sender, EventArgs e)
+        private void BtnExport_Click(object sender, EventArgs e)
         {
-            int speed = (sldSpeed.Maximum - sldSpeed.Value) * 10;
-            if(speed < 1)
+            var sfd = new SaveFileDialog { Filter = "Bitamp files (*.bmp)|*.bmp" };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+
+            GamePictureBox.Image.Save(sfd.FileName);
+            MessageBox.Show($"Image saved as\n{sfd.FileName}");
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog { Filter = FileFilter };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+
+            var error = string.Empty;
+            if (_game.Save(sfd.FileName, ref error))
+            {
+                MessageBox.Show("File succesfully saved!");
+            }
+            else
+            {
+                MessageBox.Show("Warning", "An error occured while trying to save the game!");
+            }
+        }
+
+        private void BtnLoad_Click(object sender, EventArgs e)
+        {
+            var ofd = new OpenFileDialog { Filter = FileFilter };
+            if (ofd.ShowDialog() != DialogResult.OK) return;
+
+            try
+            {
+                var error = string.Empty;
+                if (_game.Load(ofd.FileName, ref error))
+                {
+                    Draw();
+                    MessageBox.Show("File succesfully loaded!");
+                }
+                else
+                {
+                    MessageBox.Show("Error", $"An error occured while trying to load specified file\n\n{error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occured while trying to load specified file:\n\n{ex.Message}");
+            }
+        }
+
+        private void SpeedSlider_Scroll(object sender, EventArgs e)
+        {
+            var speed = (SpeedSlider.Maximum - SpeedSlider.Value) * 10;
+            if (speed < 1)
             {
                 speed = 1;
             }
 
-            lblSpeed.Text = string.Format("{0}ms", speed);
+            SpeedLabel.Text = $"{speed}ms";
             timer1.Interval = speed;
-        }
-
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            deleteCanvas();
-        }
-
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = FILE_FILTER;
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                string error = string.Empty;
-                if (game.save(sfd.FileName, ref error))
-                {
-                    MessageBox.Show("File succesfully saved!");
-                }
-                else
-                {
-                    MessageBox.Show("Warning", "An error occured while trying to save the game!");
-                }
-            }
-        }
-
-        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = FILE_FILTER;
-
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    string error = string.Empty;
-                    if (game.load(ofd.FileName, ref error))
-                    {
-                        draw();
-                        MessageBox.Show("File succesfully loaded!");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error", "An error occured while trying to load specified file\n\n" + error);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("An error occured while trying to load specified file:\n\n" + ex.Message);
-                }
-            }
-        }
-
-        private void exportAsImageToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Bitamp files (*.bmp)|*.bmp";
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                pbGame.Image.Save(sfd.FileName);
-                MessageBox.Show("Image saved as\n" + sfd.FileName);
-            }
-        }
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void toolStripButton5_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show($"Created by Logic Limit (LogLim) @ 2018\n\nFor more software visit https://www.loglim.cz/");
-        }
-
-        private void cmbTheme_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbTheme.SelectedIndex != -1)
-            {
-                currentTheme = (Theme)cmbTheme.SelectedIndex;
-                draw();
-            }
         }
     }
 }
