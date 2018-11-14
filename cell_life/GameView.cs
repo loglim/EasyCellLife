@@ -38,15 +38,40 @@ namespace LogLim.EasyCellLife
             _canvasBmp = new Bitmap(_game.W * CellSize + 1, _game.H * CellSize + 1);
             _canvasG = Graphics.FromImage(_canvasBmp);
 
-            _canvasG.SmoothingMode = SmoothingMode.AntiAlias;
-            _canvasG.CompositingQuality = CompositingQuality.HighQuality;
-
             _p1 = new Pen(_colGrid, 1f);
+
+            SetQuality(DrawQuality.Low);
         }
 
         public void SetTheme(Theme theme)
         {
             _theme = theme;
+        }
+
+        public void SetQuality(DrawQuality drawQuality)
+        {
+            switch (drawQuality)
+            {
+                case DrawQuality.High:
+                {
+
+                    _canvasG.SmoothingMode = SmoothingMode.HighQuality;
+                    _canvasG.CompositingQuality = CompositingQuality.HighQuality;
+                        break;
+                }
+                case DrawQuality.Mid:
+                {
+                    _canvasG.SmoothingMode = SmoothingMode.AntiAlias;
+                    _canvasG.CompositingQuality = CompositingQuality.AssumeLinear;
+                    break;
+                }
+                default:
+                {
+                    _canvasG.SmoothingMode = SmoothingMode.HighSpeed;
+                    _canvasG.CompositingQuality = CompositingQuality.HighSpeed;
+                    break;
+                }
+            }
         }
 
         /// <summary>

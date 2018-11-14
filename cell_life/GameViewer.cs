@@ -26,12 +26,16 @@ namespace LogLim.EasyCellLife
             VersionLabel.Text = string.Format(Strings.Version, Assembly.GetExecutingAssembly().GetName().Version);
             SetStatus(Strings.Welcome);
 
-            // Update theme options
+            // Update combo boxes
             foreach (var theme in Enum.GetValues(typeof(Theme)))
             {
                 ThemeComboBox.Items.Add(theme);
             }
-            ThemeComboBox.SelectedIndex = 0;
+            foreach (var entry in Enum.GetValues(typeof(DrawQuality)))
+            {
+                QualityComboBox.Items.Add(entry);
+            }
+            ThemeComboBox.SelectedIndex = QualityComboBox.SelectedIndex = 0;
         }
 
         private void GameViewer_Load(object sender, EventArgs e)
@@ -221,6 +225,14 @@ namespace LogLim.EasyCellLife
             if (ThemeComboBox.SelectedIndex == -1 || _gameView == null) return;
 
             _gameView?.SetTheme((Theme)ThemeComboBox.SelectedIndex);
+            Draw();
+        }
+
+        private void QualityComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (QualityComboBox.SelectedIndex == -1 || _gameView == null) return;
+
+            _gameView?.SetQuality((DrawQuality)QualityComboBox.SelectedIndex);
             Draw();
         }
     }

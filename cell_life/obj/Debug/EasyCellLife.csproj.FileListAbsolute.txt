@@ -25,3 +25,6 @@ C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Debug\EasyCellLife
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\bin\Debug\EasyCellLife.pdb
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Debug\EasyCellLife.exe
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Debug\EasyCellLife.pdb
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Debug\EasyCellLife.csprojAssemblyReference.cache
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Debug\LogLim.EasyCellLife.About.resources
+C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Debug\LogLim.EasyCellLife.Properties.Strings.resources
