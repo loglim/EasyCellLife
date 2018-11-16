@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Xml;
 using LogLim.EasyCellLife.Properties;
 
 namespace LogLim.EasyCellLife
@@ -27,9 +29,9 @@ namespace LogLim.EasyCellLife
             SetStatus(Strings.Welcome);
 
             // Update combo boxes
-            foreach (var theme in Enum.GetValues(typeof(Theme)))
+            foreach (var theme in Theme.Themes)
             {
-                ThemeComboBox.Items.Add(theme);
+                ThemeComboBox.Items.Add(theme.Name);
             }
             foreach (var entry in Enum.GetValues(typeof(DrawQuality)))
             {
@@ -46,6 +48,7 @@ namespace LogLim.EasyCellLife
 
             // Setup game view
             _gameView = new GameView(_game, pbHistoryGraph.Width, pbHistoryGraph.Height);
+            _gameView.SetTheme(Theme.Themes[0]);
 
             Draw();
         }
@@ -177,9 +180,9 @@ namespace LogLim.EasyCellLife
         {
             if (ThemeComboBox.SelectedIndex == -1 || _gameView == null) return;
 
-            var theme = (Theme) ThemeComboBox.SelectedIndex;
+            var theme = Theme.Themes[ThemeComboBox.SelectedIndex];
             _gameView?.SetTheme(theme);
-            SetStatus(string.Format(Strings.ThemeSetTo, theme));
+            SetStatus(string.Format(Strings.ThemeSetTo, theme.Name));
             Draw();
         }
 

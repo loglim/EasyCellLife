@@ -1,0 +1,95 @@
+<xml>
+  <theme>
+    <name>Dark 1</name>
+    <background>Black</background>
+    <foreground>Gold</foreground>
+    <cellshape>Square</cellshape>    
+    <cellstyle>Filled</cellstyle>
+    <cellinset>0</cellinset>
+    <showgrid>true</showgrid>    
+    <gridcolor>DimGray</gridcolor>
+  </theme>   
+  <theme>
+    <name>Dark 2</name>
+    <background>Black</background>
+    <foreground>YellowGreen</foreground>
+    <cellshape>Square</cellshape>    
+    <cellstyle>Filled</cellstyle>  
+    <cellinset>1</cellinset>
+    <showgrid>true</showgrid>    
+    <gridcolor>Black</gridcolor>
+  </theme>   
+  <theme>
+    <name>Dark 3</name>
+    <background>DarkBlue</background>
+    <foreground>LightBlue</foreground>
+    <cellshape>Square</cellshape>    
+    <cellstyle>Outlined</cellstyle>  
+    <cellinset>1</cellinset>
+    <showgrid>true</showgrid>    
+    <gridcolor>Black</gridcolor>
+  </theme>  
+  <theme>
+    <name>Light 1</name>
+    <background>WhiteSmoke</background>
+    <foreground>Blue</foreground>
+    <cellshape>Round</cellshape>   
+    <cellstyle>Filled</cellstyle>   
+    <cellinset>1</cellinset>
+    <showgrid>true</showgrid>    
+    <gridcolor>Gray</gridcolor>
+  </theme>   
+  <theme>
+    <name>Light 2</name>
+    <background>WhiteSmoke</background>
+    <foreground>DimGray</foreground>
+    <cellshape>Square</cellshape>    
+    <cellstyle>Filled</cellstyle>   
+    <cellinset>1</cellinset>
+    <showgrid>true</showgrid>    
+    <gridcolor>Gray</gridcolor>
+  </theme>  
+  <theme>
+    <name>Light 3</name>
+    <background>WhiteSmoke</background>
+    <foreground>Red</foreground>
+    <cellshape>Square</cellshape>    
+    <cellstyle>Outlined</cellstyle>   
+    <cellinset>1</cellinset>
+    <showgrid>true</showgrid>    
+    <gridcolor>Gray</gridcolor>
+  </theme>                         
+  <theme>
+    <name>Organic 1</name>
+    <background>White</background>
+    <foreground>DarkGreen</foreground>
+    <cellshape>Round</cellshape>
+    <cellstyle>Filled</cellstyle>    
+    <cellinset>1</cellinset>
+    <showgrid>false</showgrid>   
+    <gridcolor>White</gridcolor>    
+    <gridcolor></gridcolor>
+  </theme>                        
+  <theme>
+    <name>Organic 2</name>
+    <background>White</background>
+    <foreground>DarkOrange</foreground>
+    <cellshape>Round</cellshape>
+    <cellstyle>Filled</cellstyle>    
+    <cellinset>0</cellinset>
+    <showgrid>true</showgrid>   
+    <gridcolor>White</gridcolor>    
+    <gridcolor>SandyBrown</gridcolor>
+  </theme>                     
+  <theme>
+    <name>Organic 3</name>
+    <background>Orange</background>
+    <foreground>Black</foreground>
+    <cellshape>Round</cellshape>
+    <cellstyle>Filled</cellstyle>   
+    <cellinset>1</cellinset>
+    <showgrid>false</showgrid>   
+    <gridcolor>White</gridcolor>    
+    <gridcolor></gridcolor>
+  </theme>
+</xml>

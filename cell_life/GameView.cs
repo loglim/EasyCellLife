@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -12,11 +13,6 @@ namespace LogLim.EasyCellLife
         // Constants
         private const int GraphPadding = 8;
         private const int CellSize = 6;
-        private readonly Color _colBg = Color.Gray;
-        private readonly Color _colBgLight = Color.WhiteSmoke;
-        private readonly Color _colBgDark = Color.Black;
-        private readonly Color _colGrid = Color.Black;
-        private readonly Color _colField = Color.Yellow;
 
         // Private
         private readonly Bitmap _canvasBmp;
@@ -24,8 +20,11 @@ namespace LogLim.EasyCellLife
         private readonly Graphics _canvasG;
         private readonly Graphics _graphG;
         private readonly Game _game;
-        private readonly Pen _p1;
-        private Theme _theme = Theme.Dark1;
+        private Pen _gridPen;
+        private Pen _foregroundPen;
+        private Brush _foregroundBrush;
+        private Brush _graphTextBrush;
+        private Theme _theme;
 
         public GameView(Game game, int w, int h)
         {
@@ -38,14 +37,17 @@ namespace LogLim.EasyCellLife
             _canvasBmp = new Bitmap(_game.Width * CellSize + 1, _game.Height * CellSize + 1);
             _canvasG = Graphics.FromImage(_canvasBmp);
 
-            _p1 = new Pen(_colGrid, 1f);
-
             SetQuality(DrawQuality.Low);
         }
 
         public void SetTheme(Theme theme)
         {
             _theme = theme;
+
+            _gridPen = new Pen(_theme.GridColor);
+            _foregroundPen = new Pen(_theme.Foreground);
+            _foregroundBrush = new SolidBrush(_theme.Foreground);
+            _graphTextBrush = new SolidBrush(Utils.MaxContrastColor(_theme.Background, _theme.Foreground));
         }
 
         public void SetQuality(DrawQuality drawQuality)
@@ -77,30 +79,32 @@ namespace LogLim.EasyCellLife
         /// <summary>
         /// Draws filled circle on game bitmap
         /// </summary>
-        private void DrawCircle(Brush backgroundBrush, int x, int y, int radius)
+        private void DrawCircle(int x, int y, int offset, bool filled)
         {
-            _canvasG.FillEllipse(backgroundBrush, x - radius / 2, y - radius / 2, radius, radius);
+            var rectangle = new Rectangle(x * CellSize + offset, y * CellSize + offset, CellSize - 2 * offset, CellSize - 2 * offset);
+            if (filled)
+            {
+                _canvasG.FillEllipse(_foregroundBrush, rectangle);
+            }
+            else
+            {
+                _canvasG.DrawEllipse(_foregroundPen, rectangle);
+            }
         }
 
         /// <summary>
         /// Draws filled rectangle on game bitmap
         /// </summary>
-        private void DrawRect(int centerX, int centerY, int radius, Color color, bool useGradient)
+        private void DrawRectangle(int x, int y, int offset, bool filled)
         {
-            if (useGradient)
+            var rectangle = new Rectangle(x * CellSize + offset, y * CellSize + offset, CellSize - 2 * offset, CellSize - 2 * offset);
+            if (filled)
             {
-                // Gradient version
-                for (var i = 1; i <= radius; i++)
-                {
-                    var a = ((double) (radius - i) / radius * 255);
-                    _canvasG.DrawRectangle(new Pen(new SolidBrush(Color.FromArgb((int) a, color)), 1), centerX - i,
-                        centerY - i, 2 * i, 2 * i);
-                }
+                _canvasG.FillRectangle(_foregroundBrush, rectangle);
             }
             else
             {
-                // Single color 
-                _canvasG.FillRectangle(new SolidBrush(color), centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+                _canvasG.DrawRectangle(_foregroundPen, rectangle);
             }
         }
 
@@ -109,89 +113,29 @@ namespace LogLim.EasyCellLife
         /// </summary>
         private void DrawGrid()
         {
-            var backColor = _theme.ToString().Contains("Dark") ? _colBgDark : _colBgLight;
-            //var foreColor = _theme == Theme.Dark1 || _theme == Theme.Dark2 ? _colBgLight : _colBgDark;
-            _canvasG.Clear(backColor);
+            _canvasG.Clear(_theme.Background);
 
-            const int offset = 1;
+            var offset = _theme.CellInset;
             for (var x = 0; x < _game.Width; x++)
             {
                 for (var y = 0; y < _game.Height; y++)
                 {
                     // Draw grid
-                    if (!_theme.ToString().Contains("Organic"))
+                    if (_theme.UseGrid)
                     {
-                        _canvasG.DrawRectangle(_p1, x * CellSize, y * CellSize, CellSize, CellSize);
+                        _canvasG.DrawRectangle(_gridPen, x * CellSize, y * CellSize, CellSize, CellSize);
                     }
 
                     // Draw field
                     if (!_game.Get(x, y)) continue;
 
-                    switch (_theme)
+                    if (_theme.CellShape.Equals("Square"))
                     {
-                        case Theme.Dark1:
-                        {
-                            DrawRect((int) ((x + 0.5) * CellSize), (int) ((y + 0.5) * CellSize), CellSize / 2,
-                                Color.OrangeRed, false);
-                            break;
-                        }
-                        case Theme.Dark2:
-                        {
-                            DrawRect((int) ((x + 0.5) * CellSize), (int) ((y + 0.5) * CellSize), CellSize / 2,
-                                Color.YellowGreen, true);
-                            break;
-                        }
-                        case Theme.Dark3:
-                        {
-                            // Outlined circles
-                            DrawCircle(Brushes.LightBlue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2,
-                                CellSize);
-                            DrawCircle(Brushes.Blue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2,
-                                (int) (CellSize / 1.3));
-                            DrawCircle(Brushes.DarkBlue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2,
-                                (int) (CellSize / 1.5));
-                            break;
-                        }
-                        case Theme.Light1:
-                        {
-                            // Unnamed, but interesting
-                            _canvasG.FillEllipse(Brushes.LightBlue, x * CellSize + offset, y * CellSize + offset,
-                                CellSize - offset, CellSize - offset);
-                            _canvasG.FillEllipse(Brushes.Blue, x * CellSize + offset, y * CellSize + offset,
-                                CellSize - offset, CellSize - offset);
-                            _canvasG.FillEllipse(Brushes.DarkBlue, x * CellSize + offset, y * CellSize + offset,
-                                CellSize - offset, CellSize - offset);
-                            break;
-                        }
-                        case Theme.Light2:
-                        {
-                            // Simple filled rectangles
-                            _canvasG.FillRectangle(Brushes.Blue, x * CellSize + offset, y * CellSize + offset,
-                                CellSize - offset, CellSize - offset);
-                            break;
-                        }
-                        case Theme.Light3:
-                        {
-                            DrawRect((int) ((x + 0.5) * CellSize), (int) ((y + 0.5) * CellSize), CellSize / 2,
-                                Color.Red, false);
-                            break;
-                        }
-                        case Theme.Organic1:
-                        {
-                            DrawCircle(Brushes.DarkGreen, (int) ((x + 0.5) * CellSize),
-                                (int) ((y + 0.5) * CellSize),
-                                (int) (CellSize * 1.75));
-                            break;
-                        }
-                        case Theme.Organic2:
-                        {
-                            DrawCircle(Brushes.DarkOrange, (int)((x + 0.5) * CellSize),
-                                (int)((y + 0.5) * CellSize),
-                                (int)(CellSize * 1.75));
-                            break;
-                        }
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        DrawRectangle(x, y, offset, _theme.CellStyle.Equals("Filled"));
+                    }
+                    else
+                    {
+                        DrawCircle(x, y, offset, _theme.CellStyle.Equals("Filled"));
                     }
                 }
             }
@@ -200,7 +144,7 @@ namespace LogLim.EasyCellLife
         private void DrawGraph()
         {
             // Draw and show population graph
-            _graphG.Clear(_colBg);
+            _graphG.Clear(_theme.Background);
 
             var max = _game.CellCountHistory.Max();
             if (max == 0)
@@ -209,7 +153,7 @@ namespace LogLim.EasyCellLife
             }
 
             var multiplier = (double)(_graphBmp.Height - 2 * GraphPadding) / max;
-            var p2 = new Pen(Color.Red, 1f);
+            var p2 = _foregroundPen; //new Pen(Color.Red, 1f);
             for (var i = 0; i < _game.CellCountHistory.Length; i++)
             {
                 var p = _game.GraphPosition - i;
@@ -229,10 +173,10 @@ namespace LogLim.EasyCellLife
             var f = new Font(FontFamily.GenericSansSerif, 12f);
 
             // Draw y axis with labels
-            _graphG.DrawLine(_p1, 0, GraphPadding, 32, GraphPadding);
-            _graphG.DrawLine(_p1, 0, _graphBmp.Height - GraphPadding, 32, _graphBmp.Height - GraphPadding);
-            _graphG.DrawString(max.ToString(), f, Brushes.Black, 0, GraphPadding);
-            _graphG.DrawString("0", f, Brushes.Black, 0, _graphBmp.Height - GraphPadding - 20);
+            _graphG.DrawLine(_foregroundPen, 0, GraphPadding, 32, GraphPadding);
+            _graphG.DrawLine(_foregroundPen, 0, _graphBmp.Height - GraphPadding, 32, _graphBmp.Height - GraphPadding);
+            _graphG.DrawString(max.ToString(), f, _graphTextBrush, 0, GraphPadding);
+            _graphG.DrawString("0", f, _graphTextBrush, 0, _graphBmp.Height - GraphPadding - 20);
         }
 
         public Bitmap GetGrid()
@@ -249,7 +193,10 @@ namespace LogLim.EasyCellLife
 
         public void Dispose()
         {
-            _p1.Dispose();
+            _gridPen.Dispose();
+            _foregroundPen.Dispose();
+            _graphTextBrush.Dispose();
+            _foregroundBrush.Dispose();
             _graphBmp.Dispose();
             _canvasBmp.Dispose();
         }

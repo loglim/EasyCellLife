@@ -163,4 +163,10 @@ Cells: {1}</value>
   <data name="SpeedSetTo" xml:space="preserve">
     <value>Speed set to {0}fps</value>
   </data>
+  <data name="ThemesLoadingError" xml:space="preserve">
+    <value>An error occured while trying to load
+Themes XML configuration file ({0})
+
+{1}</value>
+  </data>
 </root>

@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="DrawQuality.cs" />
     <Compile Include="Theme.cs" />
+    <Compile Include="Utils.cs" />
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
@@ -108,7 +109,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ecl_64.ico" />
+    <Content Include="themes.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -225,6 +225,18 @@ namespace LogLim.EasyCellLife.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occured while trying to load
+        ///Themes XML configuration file ({0})
+        ///
+        ///{1}.
+        /// </summary>
+        internal static string ThemesLoadingError {
+            get {
+                return ResourceManager.GetString("ThemesLoadingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version {0}.
         /// </summary>
         internal static string Version {
