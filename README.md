@@ -4,7 +4,7 @@ Simple cellular automaton with editor / simulator, cells count history graph, al
 
 Program is written in C# as WinForms application, compiled and tested using Windows 7 for "Any CPU" (32/64bit),
 
-Latest release is available here - [Download](https://github.com/loglim/EasyCellLife/releases) (Windows .exe)
+Release download is available [Here](https://github.com/loglim/EasyCellLife/releases)
 
 ### How to use
 * Left click to grid swaps field between on and off<br/>
