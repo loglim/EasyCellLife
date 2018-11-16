@@ -50,37 +50,6 @@ namespace LogLim.EasyCellLife
                 CellCountHistory[i] = 0;
             }
             GraphPosition = 0;
-
-            //textBox1.Text = string.Empty;
-
-            //osc #1
-            /*grid[3, 3] = true;
-            grid[3, 4] = true;
-            grid[3, 5] = true;*/
-
-            //official
-            _grid[1, 2] = true;
-            _grid[1, 3] = true;
-            _grid[1, 4] = true;
-            _grid[3, 6] = true;
-            _grid[4, 6] = true;
-            _grid[5, 6] = true;
-            _grid[6, 5] = true;
-            _grid[6, 4] = true;
-            _grid[6, 3] = true;
-            _grid[4, 1] = true;
-            _grid[3, 1] = true;
-            _grid[2, 1] = true;
-
-            //cool
-            /*grid[2, 3] = true;
-            grid[2, 4] = true;
-            grid[3, 5] = true;
-            grid[3, 6] = true;
-            grid[4, 4] = true;
-            grid[4, 3] = true;
-            grid[3, 2] = true;
-            grid[3, 1] = true;*/
         }
 
         /// <summary>
