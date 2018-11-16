@@ -7,35 +7,44 @@ namespace LogLim.EasyCellLife
     {
         // Private
         private readonly Random _rnd;
-
         private bool[,] _grid;
         private bool[,] _gridBc;
 
-        //private int generationsLimit;
-
-        public Game(int w = 64, int h = 64)
+        /// <summary>
+        /// Creates a new instance of Game class, with desired width and height
+        /// </summary>
+        /// <param name="width">Horizontal resolution of grid</param>
+        /// <param name="height">Vertical resolution of grid</param>
+        public Game(int width = 64, int height = 64)
         {
             _rnd = new Random();
 
-            W = w;
-            H = h;
+            Width = width;
+            Height = height;
         }
 
-        public void CreateNewGrid(int graphWidth)
+        /// <summary>
+        /// Creates a new grid with desired history length
+        /// </summary>
+        /// <param name="historyLength">The width of history graph</param>
+        public void CreateNewGrid(int historyLength)
         {
-            _gridBc = new bool[W, H];
-            CellCountHistory = new int[graphWidth];
+            _gridBc = new bool[Width, Height];
+            CellCountHistory = new int[historyLength];
 
             ResetGrid();
         }
 
+        /// <summary>
+        /// Clear current grid
+        /// </summary>
         public void ResetGrid()
         {
-            _grid = new bool[W, H];
+            _grid = new bool[Width, Height];
             CellCount = 0;
             GenerationId = 0;
 
-            //clear graph history
+            // Clear graph history
             for (var i = 0; i < CellCountHistory.Length; i++)
             {
                 CellCountHistory[i] = 0;
@@ -50,18 +59,18 @@ namespace LogLim.EasyCellLife
             grid[3, 5] = true;*/
 
             //official
-            /*grid[1, 2] = true;
-            grid[1, 3] = true;
-            grid[1, 4] = true;
-            grid[3, 6] = true;
-            grid[4, 6] = true;
-            grid[5, 6] = true;
-            grid[6, 5] = true;
-            grid[6, 4] = true;
-            grid[6, 3] = true;
-            grid[4, 1] = true;
-            grid[3, 1] = true;
-            grid[2, 1] = true;*/
+            _grid[1, 2] = true;
+            _grid[1, 3] = true;
+            _grid[1, 4] = true;
+            _grid[3, 6] = true;
+            _grid[4, 6] = true;
+            _grid[5, 6] = true;
+            _grid[6, 5] = true;
+            _grid[6, 4] = true;
+            _grid[6, 3] = true;
+            _grid[4, 1] = true;
+            _grid[3, 1] = true;
+            _grid[2, 1] = true;
 
             //cool
             /*grid[2, 3] = true;
@@ -83,10 +92,10 @@ namespace LogLim.EasyCellLife
             var changes = 0;
 
             // Create temporary grid
-            var tmp = new bool[W, H];
-            for (var x = 0; x < W; x++)
+            var tmp = new bool[Width, Height];
+            for (var x = 0; x < Width; x++)
             {
-                for (var y = 0; y < H; y++)
+                for (var y = 0; y < Height; y++)
                 {
                     var alive = _grid[x, y];
 
@@ -116,19 +125,19 @@ namespace LogLim.EasyCellLife
                 }
             }
 
-            //update original grid
-            for (var x = 0; x < W; x++)
+            // Update original grid
+            for (var x = 0; x < Width; x++)
             {
-                for (var y = 0; y < H; y++)
+                for (var y = 0; y < Height; y++)
                 {
                     Set(x, y, tmp[x, y]);
                 }
             }
 
-            //save current cell count
+            // Save current cell count
             CellCountHistory[GraphPosition] = CellCount;
 
-            //increase or cycle (start over at 0) graph position
+            // Increase or cycle (start over at 0) graph position
             GraphPosition++;
             if (GraphPosition >= CellCountHistory.Length)
             {
@@ -168,27 +177,33 @@ namespace LogLim.EasyCellLife
             return n;
         }
 
+        /// <summary>
+        /// Returns element at target position, overflows once in each direction
+        /// </summary>
+        /// <param name="x">Target position x</param>
+        /// <param name="y">Target position y</param>
+        /// <returns></returns>
         public bool Get(int x, int y)
         {
-            /*if (x < 0 || y < 0 || x >= w || y >= h)
+            /*if (x < 0 || y < 0 || x >= width || y >= height)
             {
                 return false;
             }*/
             while (x < 0)
             {
-                x += W;
+                x += Width;
             }
-            while (x >= W)
+            while (x >= Width)
             {
-                x -= W;
+                x -= Width;
             }
             while (y < 0)
             {
-                y += H;
+                y += Height;
             }
-            while (y >= H)
+            while (y >= Height)
             {
-                y -= H;
+                y -= Height;
             }
 
             return _grid[x, y];
@@ -196,25 +211,25 @@ namespace LogLim.EasyCellLife
 
         private bool Set(int x, int y, bool value)
         {
-            /*if (x < 0 || y < 0 || x >= w || y >= h)
+            /*if (x < 0 || y < 0 || x >= width || y >= height)
             {
                 return false;
             }*/
             while (x < 0)
             {
-                x += W;
+                x += Width;
             }
-            while (x >= W)
+            while (x >= Width)
             {
-                x -= W;
+                x -= Width;
             }
             while (y < 0)
             {
-                y += H;
+                y += Height;
             }
-            while (y >= H)
+            while (y >= Height)
             {
-                y -= H;
+                y -= Height;
             }
 
             if (_grid[x, y] == value) return true;
@@ -225,6 +240,11 @@ namespace LogLim.EasyCellLife
             return true;
         }
 
+        /// <summary>
+        /// Generates a random group of cell originating at target position
+        /// </summary>
+        /// <param name="x">Target position x</param>
+        /// <param name="y">Target position y</param>
         public void GenerateRandomShape(int x, int y)
         {
             int[] dx = { 1, 0, -1, 0, 1, 1, -1, -1 };
@@ -240,11 +260,14 @@ namespace LogLim.EasyCellLife
             }
         }
 
+        /// <summary>
+        /// Stores a backup copy of current grid
+        /// </summary>
         public void BackupGrid()
         {
-            for (var x = 0; x < W; x++)
+            for (var x = 0; x < Width; x++)
             {
-                for (var y = 0; y < H; y++)
+                for (var y = 0; y < Height; y++)
                 {
                     _gridBc[x, y] = _grid[x, y];
                 }
@@ -253,30 +276,44 @@ namespace LogLim.EasyCellLife
             GenerationId = 1;
         }
 
+        /// <summary>
+        /// Overwrites current grid from backed-up copy
+        /// </summary>
         public void RestoreGrid()
         {
-            for (var x = 0; x < W; x++)
+            for (var x = 0; x < Width; x++)
             {
-                for (var y = 0; y < H; y++)
+                for (var y = 0; y < Height; y++)
                 {
                     Set(x, y, _gridBc[x, y]);
                 }
             }
         }
 
+        /// <summary>
+        /// Inverts value in target position field
+        /// </summary>
+        /// <param name="x">Target position x</param>
+        /// <param name="y">Target position y</param>
         public void InvertField(int x, int y)
         {
             Set(x, y, !Get(x, y));
         }
 
+        /// <summary>
+        /// Loads grid from provided file, returns encountered error message
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
         public bool Load(string filename, ref string error)
         {
             try
             {
                 var sr = new StreamReader(filename);
-                W = int.Parse(sr.ReadLine() ?? throw new InvalidOperationException());
-                H = int.Parse(sr.ReadLine() ?? throw new InvalidOperationException());
-                _grid = new bool[W, H];
+                Width = int.Parse(sr.ReadLine() ?? throw new InvalidOperationException());
+                Height = int.Parse(sr.ReadLine() ?? throw new InvalidOperationException());
+                _grid = new bool[Width, Height];
                 while (!sr.EndOfStream)
                 {
                     var line = sr.ReadLine()?.Split('#');
@@ -299,6 +336,12 @@ namespace LogLim.EasyCellLife
             return true;
         }
 
+        /// <summary>
+        /// Saves grid to provided file, returns encountered error message
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
         public bool Save(string fileName, ref string error)
         {
             try
@@ -306,13 +349,13 @@ namespace LogLim.EasyCellLife
                 var sw = new StreamWriter(fileName);
 
                 // Write grid size
-                sw.WriteLine("" + W);
-                sw.WriteLine("" + H);
+                sw.WriteLine("" + Width);
+                sw.WriteLine("" + Height);
 
                 // Write current grid
-                for (var x = 0; x < W; x++)
+                for (var x = 0; x < Width; x++)
                 {
-                    for (var y = 0; y < H; y++)
+                    for (var y = 0; y < Height; y++)
                     {
                         if (Get(x, y))
                         {
@@ -333,7 +376,7 @@ namespace LogLim.EasyCellLife
         public int CellCount { get; private set; }
         public int[] CellCountHistory { get; private set; }
         public int GraphPosition { get; private set; }
-        public int W { get; private set; }
-        public int H { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
     }
 }

@@ -35,7 +35,7 @@ namespace LogLim.EasyCellLife
             _graphBmp = new Bitmap(w, h);
             _graphG = Graphics.FromImage(_graphBmp);
 
-            _canvasBmp = new Bitmap(_game.W * CellSize + 1, _game.H * CellSize + 1);
+            _canvasBmp = new Bitmap(_game.Width * CellSize + 1, _game.Height * CellSize + 1);
             _canvasG = Graphics.FromImage(_canvasBmp);
 
             _p1 = new Pen(_colGrid, 1f);
@@ -114,9 +114,9 @@ namespace LogLim.EasyCellLife
             _canvasG.Clear(backColor);
 
             const int offset = 1;
-            for (var x = 0; x < _game.W; x++)
+            for (var x = 0; x < _game.Width; x++)
             {
-                for (var y = 0; y < _game.H; y++)
+                for (var y = 0; y < _game.Height; y++)
                 {
                     // Draw grid
                     if (!_theme.ToString().Contains("Organic"))
