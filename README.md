@@ -11,5 +11,7 @@ Latest release is available here - [Download](cell_life/bin/Release/EasyCellLife
 * Right click to grid generates a small random shape
 
 ### Preview
-![Alt Text](latest_scr.png)<br/>
+Latest screenshot<br/>
+![Alt Text](latest_scr.png)<br/><br/>
+Simulation in action<br/>
 ![Alt Text](ecl.gif)
