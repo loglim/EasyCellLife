@@ -144,6 +144,15 @@ namespace LogLim.EasyCellLife.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quality set to {0}.
+        /// </summary>
+        internal static string QualitySetTo {
+            get {
+                return ResourceManager.GetString("QualitySetTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resume.
         /// </summary>
         internal static string Resume {
@@ -162,6 +171,15 @@ namespace LogLim.EasyCellLife.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulation paused.
+        /// </summary>
+        internal static string SimulationPaused {
+            get {
+                return ResourceManager.GetString("SimulationPaused", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulation reset.
         /// </summary>
         internal static string SimulationReset {
@@ -171,11 +189,38 @@ namespace LogLim.EasyCellLife.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulation resumed.
+        /// </summary>
+        internal static string SimulationResumed {
+            get {
+                return ResourceManager.GetString("SimulationResumed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulation started....
         /// </summary>
         internal static string SimulationStarted {
             get {
                 return ResourceManager.GetString("SimulationStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speed set to {0}fps.
+        /// </summary>
+        internal static string SpeedSetTo {
+            get {
+                return ResourceManager.GetString("SpeedSetTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme set to {0}.
+        /// </summary>
+        internal static string ThemeSetTo {
+            get {
+                return ResourceManager.GetString("ThemeSetTo", resourceCulture);
             }
         }
         

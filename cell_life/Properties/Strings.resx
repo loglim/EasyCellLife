@@ -148,4 +148,19 @@ Cells: {1}</value>
   <data name="Resume" xml:space="preserve">
     <value>Resume</value>
   </data>
+  <data name="SimulationResumed" xml:space="preserve">
+    <value>Simulation resumed</value>
+  </data>
+  <data name="SimulationPaused" xml:space="preserve">
+    <value>Simulation paused</value>
+  </data>
+  <data name="QualitySetTo" xml:space="preserve">
+    <value>Quality set to {0}</value>
+  </data>
+  <data name="ThemeSetTo" xml:space="preserve">
+    <value>Theme set to {0}</value>
+  </data>
+  <data name="SpeedSetTo" xml:space="preserve">
+    <value>Speed set to {0}fps</value>
+  </data>
 </root>

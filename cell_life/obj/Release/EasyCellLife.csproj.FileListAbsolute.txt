@@ -8,7 +8,6 @@ C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Release\EasyCellLife.exe
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Release\EasyCellLife.pdb
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Release\EasyCellLife.csprojAssemblyReference.cache
 C:\Users\Admin\Source\Repos\EasyCellLife\cell_life\obj\Release\EasyCellLife.csproj.CoreCompileInputs.cache
-C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\EasyCellLife.csprojAssemblyReference.cache
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\LogLim.EasyCellLife.GameViewer.resources
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\LogLim.EasyCellLife.Properties.Resources.resources
 C:\Users\Admin\Source\Repos\loglim\EasyCellLife\cell_life\obj\Release\EasyCellLife.csproj.GenerateResource.cache

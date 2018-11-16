@@ -44,10 +44,9 @@ namespace LogLim.EasyCellLife
             _game = new Game();
             _game.CreateNewGrid(pbHistoryGraph.Width);
 
-            // Make game´s picture the same size as its bitmap
-            //GamePictureBox.Size = _canvasBmp.Size;
-
+            // Setup game view
             _gameView = new GameView(_game, pbHistoryGraph.Width, pbHistoryGraph.Height);
+
             Draw();
         }
 
@@ -56,6 +55,9 @@ namespace LogLim.EasyCellLife
             // Update pictures
             GamePictureBox.Image = _gameView.GetGrid();
             pbHistoryGraph.Image = _gameView.GetGraph();
+
+            // Make game´s picture the same size as its bitmap
+            GamePictureBox.Size = GamePictureBox.Image.Size;
 
             // Update info
             lblGeneration.Text = string.Format(Strings.GenerationCells, _game.GenerationId, _game.CellCount);
@@ -85,48 +87,14 @@ namespace LogLim.EasyCellLife
             }
             _game.InvertField(x, y);
 
-            //textBox1.Text += string.Format("{0} x {1}\n", x, y);//("grid[{0}, {1}] = true;\n", x, y);
-
             Draw();
         }
 
-        private void BtnStart_Click(object sender, EventArgs e)
-        {
-            _game.BackupGrid();
-            timer1.Start();
-            SetControlButtons(false, true, true, true);
-            SetStatus(Strings.SimulationStarted);
-        }
-
-        private void BtnReset_Click(object sender, EventArgs e)
-        {
-            timer1.Stop();
-            _game.RestoreGrid();
-            Draw();
-            SetControlButtons(true, true, false, false);
-            SetStatus(Strings.SimulationReset);
-        }
-
-        private void BtnDelete_Click(object sender, EventArgs e)
-        {
-            timer1.Stop();
-            _game.ResetGrid();
-            Draw();
-            SetControlButtons(true, false, false, false);
-        }
-
-        private void SetControlButtons(bool start, bool delete, bool reset, bool pause)
+        private void SetControlButtons(bool start, bool reset, bool pause)
         {
             StartButton.Enabled = start;
-            DeleteButton.Enabled = delete;
             ResetButton.Enabled = reset;
             PauseButton.Enabled = pause;
-        }
-
-        private void BtnPause_Click(object sender, EventArgs e)
-        {
-            timer1.Enabled = !timer1.Enabled;
-            PauseButton.Text = timer1.Enabled ? Strings.Pause : Strings.Resume;
         }
 
         private void Export()
@@ -178,21 +146,87 @@ namespace LogLim.EasyCellLife
             }
         }
 
-        private void SpeedSlider_Scroll(object sender, EventArgs e)
+        private void NewFile()
         {
-            var speed = (SpeedSlider.Maximum - SpeedSlider.Value) * 10;
-            if (speed < 1)
+            if (_game.CellCount > 0)
             {
-                speed = 1;
+                // TODO: Check unsaved changes + prompt save
             }
 
-            SpeedLabel.Text = $"{speed}ms";
+            _game.CreateNewGrid(pbHistoryGraph.Width);
+            SetControlButtons(true, false, false);
+            Draw();
+        }
+
+        private void SpeedSlider_Scroll(object sender, EventArgs e)
+        {
+            var fps = SpeedSlider.Value;
+
+            var speed = (int)Math.Round(1000f / fps);
+            SpeedLabel.Text = $"{fps} fps";
+            SetStatus(string.Format(Strings.SpeedSetTo, fps));
             timer1.Interval = speed;
         }
 
         private void SetStatus(string message)
         {
             StatusLabel.Text = message;
+        }
+
+        private void ThemeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ThemeComboBox.SelectedIndex == -1 || _gameView == null) return;
+
+            var theme = (Theme) ThemeComboBox.SelectedIndex;
+            _gameView?.SetTheme(theme);
+            SetStatus(string.Format(Strings.ThemeSetTo, theme));
+            Draw();
+        }
+
+        private void QualityComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (QualityComboBox.SelectedIndex == -1 || _gameView == null) return;
+
+            var quality = (DrawQuality) QualityComboBox.SelectedIndex;
+            _gameView?.SetQuality(quality);
+            SetStatus(string.Format(Strings.QualitySetTo, quality));
+            Draw();
+        }
+
+        private void StopSimulation()
+        {
+            timer1.Stop();
+            PauseButton.Text = Strings.Pause;
+        }
+
+        #region ButtonsClickAction
+        private void BtnStart_Click(object sender, EventArgs e)
+        {
+            _game.BackupGrid();
+            timer1.Start();
+            SetControlButtons(false, true, true);
+            SetStatus(Strings.SimulationStarted);
+        }
+
+        private void BtnReset_Click(object sender, EventArgs e)
+        {
+            StopSimulation();
+            _game.RestoreGrid();
+            Draw();
+            SetControlButtons(true, false, false);
+            SetStatus(Strings.SimulationReset);
+        }
+
+        private void BtnPause_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = !timer1.Enabled;
+            PauseButton.Text = timer1.Enabled ? Strings.Pause : Strings.Resume;
+            SetStatus(timer1.Enabled ? Strings.SimulationResumed : Strings.SimulationPaused);
+        }
+
+        private void NewButton_Click(object sender, EventArgs e)
+        {
+            NewFile();
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
@@ -219,21 +253,6 @@ namespace LogLim.EasyCellLife
         {
             new About().ShowDialog();
         }
-
-        private void ThemeComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ThemeComboBox.SelectedIndex == -1 || _gameView == null) return;
-
-            _gameView?.SetTheme((Theme)ThemeComboBox.SelectedIndex);
-            Draw();
-        }
-
-        private void QualityComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (QualityComboBox.SelectedIndex == -1 || _gameView == null) return;
-
-            _gameView?.SetQuality((DrawQuality)QualityComboBox.SelectedIndex);
-            Draw();
-        }
+        #endregion ButtonsClickAction
     }
 }

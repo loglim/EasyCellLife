@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                _gameView.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -33,7 +34,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.GamePictureBox = new System.Windows.Forms.PictureBox();
             this.StartButton = new System.Windows.Forms.Button();
-            this.DeleteButton = new System.Windows.Forms.Button();
             this.ResetButton = new System.Windows.Forms.Button();
             this.PauseButton = new System.Windows.Forms.Button();
             this.lblGeneration = new System.Windows.Forms.Label();
@@ -43,6 +43,7 @@
             this.pbHistoryGraph = new System.Windows.Forms.PictureBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.FileButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.NewButton = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenButton = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsButton = new System.Windows.Forms.ToolStripMenuItem();
             this.ExportButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,11 +66,11 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // GamePictureBox
             // 
+            this.GamePictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.GamePictureBox.Location = new System.Drawing.Point(12, 35);
             this.GamePictureBox.Name = "GamePictureBox";
             this.GamePictureBox.Size = new System.Drawing.Size(424, 389);
@@ -87,21 +88,10 @@
             this.StartButton.UseVisualStyleBackColor = true;
             this.StartButton.Click += new System.EventHandler(this.BtnStart_Click);
             // 
-            // DeleteButton
-            // 
-            this.DeleteButton.Enabled = false;
-            this.DeleteButton.Location = new System.Drawing.Point(174, 430);
-            this.DeleteButton.Name = "DeleteButton";
-            this.DeleteButton.Size = new System.Drawing.Size(75, 23);
-            this.DeleteButton.TabIndex = 3;
-            this.DeleteButton.Text = "Delete";
-            this.DeleteButton.UseVisualStyleBackColor = true;
-            this.DeleteButton.Click += new System.EventHandler(this.BtnDelete_Click);
-            // 
             // ResetButton
             // 
             this.ResetButton.Enabled = false;
-            this.ResetButton.Location = new System.Drawing.Point(93, 430);
+            this.ResetButton.Location = new System.Drawing.Point(201, 430);
             this.ResetButton.Name = "ResetButton";
             this.ResetButton.Size = new System.Drawing.Size(75, 23);
             this.ResetButton.TabIndex = 4;
@@ -112,7 +102,7 @@
             // PauseButton
             // 
             this.PauseButton.Enabled = false;
-            this.PauseButton.Location = new System.Drawing.Point(255, 430);
+            this.PauseButton.Location = new System.Drawing.Point(93, 430);
             this.PauseButton.Name = "PauseButton";
             this.PauseButton.Size = new System.Drawing.Size(75, 23);
             this.PauseButton.TabIndex = 8;
@@ -131,17 +121,21 @@
             // 
             // SpeedSlider
             // 
-            this.SpeedSlider.Location = new System.Drawing.Point(442, 379);
-            this.SpeedSlider.Maximum = 100;
+            this.SpeedSlider.AutoSize = false;
+            this.SpeedSlider.Location = new System.Drawing.Point(442, 398);
+            this.SpeedSlider.Maximum = 120;
+            this.SpeedSlider.Minimum = 1;
             this.SpeedSlider.Name = "SpeedSlider";
-            this.SpeedSlider.Size = new System.Drawing.Size(170, 45);
+            this.SpeedSlider.Size = new System.Drawing.Size(170, 26);
             this.SpeedSlider.TabIndex = 10;
+            this.SpeedSlider.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.SpeedSlider.Value = 10;
             this.SpeedSlider.Scroll += new System.EventHandler(this.SpeedSlider_Scroll);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(442, 363);
+            this.label2.Location = new System.Drawing.Point(442, 379);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(87, 13);
             this.label2.TabIndex = 11;
@@ -150,11 +144,11 @@
             // SpeedLabel
             // 
             this.SpeedLabel.AutoSize = true;
-            this.SpeedLabel.Location = new System.Drawing.Point(568, 363);
+            this.SpeedLabel.Location = new System.Drawing.Point(568, 379);
             this.SpeedLabel.Name = "SpeedLabel";
-            this.SpeedLabel.Size = new System.Drawing.Size(44, 13);
+            this.SpeedLabel.Size = new System.Drawing.Size(36, 13);
             this.SpeedLabel.TabIndex = 12;
-            this.SpeedLabel.Text = "1000ms";
+            this.SpeedLabel.Text = "10 fps";
             // 
             // pbHistoryGraph
             // 
@@ -179,6 +173,7 @@
             // FileButton
             // 
             this.FileButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NewButton,
             this.OpenButton,
             this.SaveAsButton,
             this.ExportButton,
@@ -189,6 +184,14 @@
             this.FileButton.Name = "FileButton";
             this.FileButton.Size = new System.Drawing.Size(54, 22);
             this.FileButton.Text = "File";
+            // 
+            // NewButton
+            // 
+            this.NewButton.Name = "NewButton";
+            this.NewButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.NewButton.Size = new System.Drawing.Size(183, 22);
+            this.NewButton.Text = "New";
+            this.NewButton.Click += new System.EventHandler(this.NewButton_Click);
             // 
             // OpenButton
             // 
@@ -268,16 +271,16 @@
             // ThemeComboBox
             // 
             this.ThemeComboBox.FormattingEnabled = true;
-            this.ThemeComboBox.Location = new System.Drawing.Point(445, 308);
+            this.ThemeComboBox.Location = new System.Drawing.Point(513, 299);
             this.ThemeComboBox.Name = "ThemeComboBox";
-            this.ThemeComboBox.Size = new System.Drawing.Size(121, 21);
+            this.ThemeComboBox.Size = new System.Drawing.Size(99, 21);
             this.ThemeComboBox.TabIndex = 16;
             this.ThemeComboBox.SelectedIndexChanged += new System.EventHandler(this.ThemeComboBox_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(442, 292);
+            this.label1.Location = new System.Drawing.Point(442, 302);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 13);
             this.label1.TabIndex = 17;
@@ -286,7 +289,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(442, 251);
+            this.label3.Location = new System.Drawing.Point(442, 275);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 13);
             this.label3.TabIndex = 18;
@@ -295,9 +298,9 @@
             // QualityComboBox
             // 
             this.QualityComboBox.FormattingEnabled = true;
-            this.QualityComboBox.Location = new System.Drawing.Point(442, 267);
+            this.QualityComboBox.Location = new System.Drawing.Point(513, 272);
             this.QualityComboBox.Name = "QualityComboBox";
-            this.QualityComboBox.Size = new System.Drawing.Size(121, 21);
+            this.QualityComboBox.Size = new System.Drawing.Size(99, 21);
             this.QualityComboBox.TabIndex = 19;
             this.QualityComboBox.SelectedIndexChanged += new System.EventHandler(this.QualityComboBox_SelectedIndexChanged);
             // 
@@ -319,7 +322,6 @@
             this.Controls.Add(this.lblGeneration);
             this.Controls.Add(this.PauseButton);
             this.Controls.Add(this.ResetButton);
-            this.Controls.Add(this.DeleteButton);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.GamePictureBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -345,7 +347,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.PictureBox GamePictureBox;
         private System.Windows.Forms.Button StartButton;
-        private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button ResetButton;
         private System.Windows.Forms.Button PauseButton;
         private System.Windows.Forms.Label lblGeneration;
@@ -368,6 +369,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox QualityComboBox;
+        private System.Windows.Forms.ToolStripMenuItem NewButton;
     }
 }
 
