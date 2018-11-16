@@ -11,6 +11,7 @@
         Light1,
         Light2,
         Light3,
-        Organic1
+        Organic1,
+        Organic2
     }
 }

@@ -7,7 +7,7 @@ namespace LogLim.EasyCellLife
 {
     // TODO: Un-hard-code theme definitions into something more standalone (perhaps xml file)
 
-    internal class GameView
+    internal class GameView : IDisposable
     {
         // Constants
         private const int GraphPadding = 8;
@@ -130,47 +130,66 @@ namespace LogLim.EasyCellLife
                     switch (_theme)
                     {
                         case Theme.Dark1:
-                            {
-                                DrawRect((int)((x + 0.5) * CellSize), (int)((y + 0.5) * CellSize), CellSize / 2, Color.OrangeRed, false);
-                                break;
-                            }
+                        {
+                            DrawRect((int) ((x + 0.5) * CellSize), (int) ((y + 0.5) * CellSize), CellSize / 2,
+                                Color.OrangeRed, false);
+                            break;
+                        }
                         case Theme.Dark2:
-                            {
-                                DrawRect((int)((x + 0.5) * CellSize), (int)((y + 0.5) * CellSize), CellSize / 2, Color.YellowGreen, true);
-                                break;
-                            }
+                        {
+                            DrawRect((int) ((x + 0.5) * CellSize), (int) ((y + 0.5) * CellSize), CellSize / 2,
+                                Color.YellowGreen, true);
+                            break;
+                        }
                         case Theme.Dark3:
-                            {
-                                // Outlined circles
-                                DrawCircle(Brushes.LightBlue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2, CellSize);
-                                DrawCircle(Brushes.Blue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2, (int)(CellSize / 1.3));
-                                DrawCircle(Brushes.DarkBlue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2, (int)(CellSize / 1.5));
-                                break;
-                            }
+                        {
+                            // Outlined circles
+                            DrawCircle(Brushes.LightBlue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2,
+                                CellSize);
+                            DrawCircle(Brushes.Blue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2,
+                                (int) (CellSize / 1.3));
+                            DrawCircle(Brushes.DarkBlue, x * CellSize + CellSize / 2, y * CellSize + CellSize / 2,
+                                (int) (CellSize / 1.5));
+                            break;
+                        }
                         case Theme.Light1:
-                            {
-                                // Unnamed, but interesting
-                                _canvasG.FillEllipse(Brushes.LightBlue, x * CellSize + offset, y * CellSize + offset, CellSize - offset, CellSize - offset);
-                                _canvasG.FillEllipse(Brushes.Blue, x * CellSize + offset, y * CellSize + offset, CellSize - offset, CellSize - offset);
-                                _canvasG.FillEllipse(Brushes.DarkBlue, x * CellSize + offset, y * CellSize + offset, CellSize - offset, CellSize - offset);
-                                break;
-                            }
+                        {
+                            // Unnamed, but interesting
+                            _canvasG.FillEllipse(Brushes.LightBlue, x * CellSize + offset, y * CellSize + offset,
+                                CellSize - offset, CellSize - offset);
+                            _canvasG.FillEllipse(Brushes.Blue, x * CellSize + offset, y * CellSize + offset,
+                                CellSize - offset, CellSize - offset);
+                            _canvasG.FillEllipse(Brushes.DarkBlue, x * CellSize + offset, y * CellSize + offset,
+                                CellSize - offset, CellSize - offset);
+                            break;
+                        }
                         case Theme.Light2:
-                            {
-                                // Simple filled rectangles
-                                _canvasG.FillRectangle(Brushes.Blue, x * CellSize + offset, y * CellSize + offset, CellSize - offset, CellSize - offset);
-                                break;
-                            }
+                        {
+                            // Simple filled rectangles
+                            _canvasG.FillRectangle(Brushes.Blue, x * CellSize + offset, y * CellSize + offset,
+                                CellSize - offset, CellSize - offset);
+                            break;
+                        }
                         case Theme.Light3:
-                            {
-                                DrawRect((int)((x + 0.5) * CellSize), (int)((y + 0.5) * CellSize), CellSize / 2, Color.Red, false);
-                                break;
-                            }
+                        {
+                            DrawRect((int) ((x + 0.5) * CellSize), (int) ((y + 0.5) * CellSize), CellSize / 2,
+                                Color.Red, false);
+                            break;
+                        }
                         case Theme.Organic1:
-                            {
-                                DrawCircle(Brushes.DarkGreen, (int)((x + 0.5) * CellSize), (int)((y + 0.5) * CellSize), (int)(CellSize * 1.75));
-                                break;
-                            }
+                        {
+                            DrawCircle(Brushes.DarkGreen, (int) ((x + 0.5) * CellSize),
+                                (int) ((y + 0.5) * CellSize),
+                                (int) (CellSize * 1.75));
+                            break;
+                        }
+                        case Theme.Organic2:
+                        {
+                            DrawCircle(Brushes.DarkOrange, (int)((x + 0.5) * CellSize),
+                                (int)((y + 0.5) * CellSize),
+                                (int)(CellSize * 1.75));
+                            break;
+                        }
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
@@ -226,6 +245,13 @@ namespace LogLim.EasyCellLife
         {
             DrawGraph();
             return _graphBmp;
+        }
+
+        public void Dispose()
+        {
+            _p1.Dispose();
+            _graphBmp.Dispose();
+            _canvasBmp.Dispose();
         }
     }
 }
