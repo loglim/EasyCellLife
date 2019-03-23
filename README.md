@@ -7,8 +7,8 @@ Program is written in C# as WinForms application, compiled and tested using Wind
 Release download is available [Here](https://github.com/loglim/EasyCellLife/releases)
 
 ### How to use
-* Left click to grid swaps field between on and off<br/>
-* Right click to grid generates a small random shape
+* Left click on grid to toggle field on and off<br/>
+* Right click on grid to generate a small random shape
 
 ### Preview
 Latest screenshot<br/>
